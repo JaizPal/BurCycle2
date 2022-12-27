@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611792793980",
+    "project_id": "burcycle",
+    "storage_bucket": "burcycle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611792793980:android:0e4c058bc3e1f6c2ab74f9",
+        "android_client_info": {
+          "package_name": "com.example.burcycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611792793980-bh6bot57ri37bit0v1dnufgflstg1a59.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.burcycle",
+            "certificate_hash": "1843f1bc2b1a89aacca55a405afaea1fd9e82db5"
+          }
+        },
+        {
+          "client_id": "611792793980-b96eliu4q0rtm2nvkdk345md9883qtbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSY3oPt4x7MkfLd1NOc3e761R7MyiQQcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611792793980-b96eliu4q0rtm2nvkdk345md9883qtbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
