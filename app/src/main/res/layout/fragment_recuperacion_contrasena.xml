@@ -30,7 +30,7 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Introduce tu email para recuperar la contraseña"
+            android:text="@string/introduce_tu_email_para_recuperar_la_contrasena"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textSize="24sp"/>
