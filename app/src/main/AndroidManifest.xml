@@ -50,7 +50,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCzqmtIDytYQV66M-rsmyRHDB_rtT-YNUM" />
+            android:value="${MAPS_API_KEY}"/>
 
         <!-- Necessary for apps that target Android 9.0 or higher -->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />

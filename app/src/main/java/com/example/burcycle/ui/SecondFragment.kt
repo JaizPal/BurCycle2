@@ -6,13 +6,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import com.example.burcycle.R
 import com.example.burcycle.databinding.FragmentSecondBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,7 +21,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.LocationSource
 
 
 class SecondFragment : Fragment(), OnMapReadyCallback {
@@ -44,13 +42,12 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
-        val mapFragment = activity?.supportFragmentManager?.findFragmentById(R.id.SecondFragment) as? SupportMapFragment
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
         getLocationPermission()
-        return binding.root
 
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +60,12 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
         _binding = null
     }
 
+
+
     override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        map?.setMinZoomPreference(6.0f)
+        map?.setMaxZoomPreference(14.0f)
         getLocationPermission()
         // [END_EXCLUDE]
 
@@ -71,10 +73,20 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
         updateLocationUI()
 
         // Get the current location of the device and set the position of the map.
-        getDeviceLocation()
+//        getDeviceLocation()
 
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation,
             DEFAULT_ZOOM.toFloat()))
+
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(defaultLocation)
+                .title("Marker in Sydney")
+        )
+
+        googleMap.setOnMarkerClickListener{
+            true
+        }
     }
 
     /**

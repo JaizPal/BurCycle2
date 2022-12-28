@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_buscar"
+        android:enabled="true"
+        android:icon="?android:attr/actionModeWebSearchDrawable"
+        android:title="@string/buscar" />
+    <item
+        android:id="@+id/item_mapa"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/mapa" />
+
+    <item
+        android:id="@+id/item_cuenta"
+        android:enabled="true"
+        android:icon="@drawable/person_fill"
+        android:title="@string/mapa" />
+</menu>
