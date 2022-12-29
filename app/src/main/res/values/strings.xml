@@ -56,4 +56,7 @@
     <string name="introduce_tu_email_para_recuperar_la_contrasena">Introduce tu email para recuperar la contraseña</string>
     <string name="mapa">Mapa</string>
     <string name="buscar">Buscar</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="has_olvidado_la_contrasena">¿Has olvidado la contraseña?</string>
+    <string name="pulsa_aqui">Pulsa aquí</string>
 </resources>

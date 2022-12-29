@@ -98,23 +98,30 @@
             android:layout_marginRight="20dp"
             android:text="@string/entra_con_google"
             app:icon="@drawable/icons8_google" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="¿Has olvidado la contraseña?"
+            android:text="@string/has_olvidado_la_contrasena"
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_gravity="bottom"/>
 
         <TextView
             android:id="@+id/tvOlvidoContrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pulsa aquí"
+            android:text="@string/pulsa_aqui"
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+           android:layout_marginBottom="40dp"
+            />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

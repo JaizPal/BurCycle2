@@ -15,5 +15,5 @@
         android:id="@+id/item_cuenta"
         android:enabled="true"
         android:icon="@drawable/person_fill"
-        android:title="@string/mapa" />
+        android:title="@string/cuenta" />
 </menu>
