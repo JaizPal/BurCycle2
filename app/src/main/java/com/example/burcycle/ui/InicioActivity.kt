@@ -44,20 +44,8 @@ class InicioActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val searchView = supportFragmentManager.findFragmentById(R.id.searchView) as AutocompleteSupportFragment
-            searchView.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-                .setOnPlaceSelectedListener(object : PlaceSelectionListener {
-                    override fun onPlaceSelected(place: Place) {
-                        // TODO: Get info about the selected place.
-                        Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                    }
 
-                    override fun onError(status: Status) {
-                        // TODO: Handle the error.
-                        Log.i("TAG", "An error occurred: $status")
-                    }
-                })
+        navController.addOnDestinationChangedListener { _, destination, _ ->
 //            binding.searchView.isVisible = false
 //            supportActionBar?.title = null
 //            when (destination.id) {

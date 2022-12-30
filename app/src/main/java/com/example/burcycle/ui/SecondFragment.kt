@@ -23,10 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,7 +70,14 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
                     addMarker(parking)
                 }
             }
-
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        lastKnownLocation!!.latitude,
+                        lastKnownLocation!!.longitude
+                    ), DEFAULT_ZOOM.toFloat() - 1
+                )
+            )
         }
 
         return binding.root
@@ -102,6 +106,7 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+//        map?.setMapStyle(MapStyleOptions())
         clusterManager = ClusterManager(requireContext(), map)
         map?.setMinZoomPreference(13.0f)
         map?.setOnCameraIdleListener(clusterManager)
@@ -239,7 +244,7 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private val TAG = SecondFragment::class.java.simpleName
-        private const val DEFAULT_ZOOM = 18
+        private const val DEFAULT_ZOOM = 19
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
 
         // Keys for storing activity state.

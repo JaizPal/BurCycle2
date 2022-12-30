@@ -27,6 +27,7 @@ class MapViewModel @Inject constructor() : ViewModel() {
     val parkings = MutableLiveData<ArrayList<Parking>>()
     var parkingsCargados = MutableLiveData<Boolean>()
     var parkingPulsado = MutableLiveData<Parking>()
+
     private lateinit var database: FirebaseDatabase
 
     fun onCreate() {
