@@ -3,10 +3,10 @@ package com.example.burcycle.ui
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.burcycle.databinding.FragmentRecuperacionContrasenaBinding
 import com.google.android.material.textfield.TextInputEditText

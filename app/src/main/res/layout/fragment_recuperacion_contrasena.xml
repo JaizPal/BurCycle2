@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -18,11 +19,11 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             app:cardElevation="20dp">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bur_cycle_fondo_morado">
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@drawable/bur_cycle_fondo_morado"></androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -33,7 +34,7 @@
             android:text="@string/introduce_tu_email_para_recuperar_la_contrasena"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textFieldEmail"

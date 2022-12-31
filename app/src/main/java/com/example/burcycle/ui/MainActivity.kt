@@ -3,13 +3,7 @@ package com.example.burcycle.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import com.example.burcycle.R
 import com.example.burcycle.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

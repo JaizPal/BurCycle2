@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.burcycle.R
 import com.example.burcycle.databinding.FragmentLoginBinding
@@ -37,32 +37,33 @@ class LoginFragment : Fragment() {
 
     private val GOOGLE_CODE = 100
 
-    private val googleLoginIntent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                if(account != null) {
-                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                    FirebaseAuth.getInstance().signInWithCredential(credential)
-                        .addOnCompleteListener{
-                            if (it.isSuccessful) {
-                                guardarDatosUsuario(it.result.user?.email ?: "")
-                                navegarInicio()
+    private val googleLoginIntent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    val account = task.getResult(ApiException::class.java)
+                    if (account != null) {
+                        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                        FirebaseAuth.getInstance().signInWithCredential(credential)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    guardarDatosUsuario(it.result.user?.email ?: "")
+                                    navegarInicio()
+                                }
+                            }.addOnFailureListener {
+                                showAlert(it.message.toString(), "Error")
                             }
-                        }.addOnFailureListener {
-                            showAlert(it.message.toString(), "Error")
-                        }
-                    Log.d("--- Google Login ---", "Correcto")
+                        Log.d("--- Google Login ---", "Correcto")
+                    }
+                    Log.d("--- Google Login ---", "Incorrecto")
+                } catch (e: ApiException) {
+                    Log.d("--- Google Login ---", "Incorrecto")
+                    Log.d("||| Google Login |||", e.message.toString())
+                    System.err.println(e.message)
                 }
-                Log.d("--- Google Login ---", "Incorrecto")
-            } catch (e: ApiException) {
-                Log.d("--- Google Login ---", "Incorrecto")
-                Log.d("||| Google Login |||", e.message.toString())
-                System.err.println(e.message)
             }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -118,7 +119,6 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
 
 
     private fun iniciarSesionGoogle() {

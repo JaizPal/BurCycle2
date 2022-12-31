@@ -24,11 +24,11 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             app:cardElevation="20dp">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bur_cycle_fondo_morado">
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@drawable/bur_cycle_fondo_morado"></androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -63,9 +63,10 @@
                 android:id="@+id/inPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textFieldPasswordRepeat"
             android:layout_width="match_parent"
@@ -91,7 +92,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="@string/registrarse" />
-
 
 
     </LinearLayout>

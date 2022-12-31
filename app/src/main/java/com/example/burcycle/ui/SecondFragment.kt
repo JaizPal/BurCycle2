@@ -61,7 +61,8 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
         getLocationPermission()
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
 
         mapViewModel.onCreate()
         mapViewModel.parkingsCargados.observe(requireActivity()) { parkingsCargados ->
@@ -69,6 +70,10 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
                 mapViewModel.parkings.value?.forEach { parking ->
                     addMarker(parking)
                 }
+            }
+
+            if(lastKnownLocation == null) {
+                getDeviceLocation()
             }
             map?.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(

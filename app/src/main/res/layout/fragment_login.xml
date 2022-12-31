@@ -19,17 +19,18 @@
         app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/MaterialAlertDialog.Material3"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             app:cardElevation="20dp">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bur_cycle_fondo_morado">
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@drawable/bur_cycle_fondo_morado"></androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -98,6 +99,7 @@
             android:layout_marginRight="20dp"
             android:text="@string/entra_con_google"
             app:icon="@drawable/icons8_google" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -111,7 +113,7 @@
             android:text="@string/has_olvidado_la_contrasena"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom" />
 
         <TextView
             android:id="@+id/tvOlvidoContrasena"
@@ -120,8 +122,7 @@
             android:text="@string/pulsa_aqui"
             android:textAlignment="center"
             android:textSize="18sp"
-           android:layout_marginBottom="40dp"
-            />
+            android:layout_marginBottom="40dp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

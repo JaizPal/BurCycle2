@@ -2,13 +2,12 @@ package com.example.burcycle.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.os.PatternMatcher
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -30,9 +29,9 @@ class RegisterFragment : Fragment() {
 
     private val registrerViewModel: RegisterViewModel by viewModels()
 
-    private lateinit var textInputLayoutEmail : TextInputLayout
-    private lateinit var textInputLayoutPassword : TextInputLayout
-    private lateinit var textInputLayoutPasswordRepeat : TextInputLayout
+    private lateinit var textInputLayoutEmail: TextInputLayout
+    private lateinit var textInputLayoutPassword: TextInputLayout
+    private lateinit var textInputLayoutPasswordRepeat: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +56,7 @@ class RegisterFragment : Fragment() {
         val email = binding.inEmail.text.toString().trim().lowercase()
         val password = binding.inPassword.text.toString().trim()
         val passwordRepeat = binding.inPasswordRepeat.text.toString().trim()
-        if (comprobarRegistro(email,password, passwordRepeat)) {
+        if (comprobarRegistro(email, password, passwordRepeat)) {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                 email, password
             ).addOnCompleteListener { it ->
@@ -80,7 +79,11 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun comprobarRegistro(email: String, password: String, passwordRepeat: String): Boolean {
+    private fun comprobarRegistro(
+        email: String,
+        password: String,
+        passwordRepeat: String
+    ): Boolean {
         var correcto = true;
         if (email.isBlank()) {
             textInputLayoutEmail.error = "Campo obligatorio"
@@ -108,7 +111,7 @@ class RegisterFragment : Fragment() {
             textInputLayoutPassword.isErrorEnabled = false
         }
 
-        if(passwordRepeat.isBlank()) {
+        if (passwordRepeat.isBlank()) {
             textInputLayoutPasswordRepeat.error = "Campo obligatorio"
             textInputLayoutPasswordRepeat.isErrorEnabled = true
             correcto = false

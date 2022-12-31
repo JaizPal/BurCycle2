@@ -1,25 +1,16 @@
 package com.example.burcycle.ui.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.burcycle.ui.model.Parking
 import com.example.burcycle.ui.model.ParkingBD
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @HiltViewModel
 class MapViewModel @Inject constructor() : ViewModel() {
@@ -36,7 +27,7 @@ class MapViewModel @Inject constructor() : ViewModel() {
         parkings.value = ArrayList()
         cargarParkings()
         parkingsCargados.value = false
-        parkingPulsado.value = Parking(1, LatLng(1.0, 1.0), "1")
+        parkingPulsado.value = Parking(1, LatLng(1.0, 1.0), "1", "", 0f)
     }
 
 
@@ -49,7 +40,15 @@ class MapViewModel @Inject constructor() : ViewModel() {
                 if (task.isSuccessful) {
                     pp = task.result.getValue<List<ParkingBD>>()!!
                     pp.forEach {
-                        parkingsBD.add(Parking(it.id, (LatLng(it.lat, it.lon)), it.tags.capacity))
+                        parkingsBD.add(
+                            Parking(
+                                it.id,
+                                (LatLng(it.lat, it.lon)),
+                                it.tags.capacity,
+                                "",
+                                0f
+                            )
+                        )
                     }
                 }
                 parkings.value = parkingsBD
