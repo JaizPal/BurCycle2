@@ -6,30 +6,39 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.burcycle.ui.model.Parking
 import com.example.burcycle.ui.model.ParkingBD
-import com.google.android.gms.common.util.Strings
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class BuscarViewModel @Inject constructor() : ViewModel() {
 
     val parkings = MutableLiveData<List<Parking>>()
     val parkingsCercanos = MutableLiveData<List<Parking>>()
-    var parkingsCercanosCargados = MutableLiveData<Boolean>()
+    var parkingsCercanosCargados = MutableLiveData(false)
     var parkingsCargados = MutableLiveData<Boolean>()
+
+    var cardChecked = MutableLiveData<MaterialCardView?>()
+    var parkingElegido = MutableLiveData<Parking?>()
+
+    var parkingsRecientes = MutableLiveData<ArrayList<Parking>>()
+    var parkingsRecientesCargados = MutableLiveData(false)
 
     private lateinit var database: FirebaseDatabase
 
     private lateinit var geocoder: Geocoder
-//    val geocoder = Geocoder(context, Locale.US)
 
     fun onCreate(context: Context) {
         geocoder = Geocoder(context, Locale.US)
@@ -37,10 +46,14 @@ class BuscarViewModel @Inject constructor() : ViewModel() {
             Firebase.database("https://burcycle-default-rtdb.europe-west1.firebasedatabase.app/")
         parkings.value = ArrayList()
         parkingsCercanos.value = ArrayList()
-        parkingsCercanosCargados. value = false
+
         parkingsCargados.value = false
         cargarParkings()
+        cardChecked.value = null
+        parkingElegido.value = null
 
+        parkingsRecientes.value = ArrayList()
+        cargarRecientes(context)
     }
 
     private fun cargarParkings() {
@@ -52,11 +65,7 @@ class BuscarViewModel @Inject constructor() : ViewModel() {
                 pp.forEach {
                     parkingsBD.add(
                         Parking(
-                            it.id,
-                            (LatLng(it.lat, it.lon)),
-                            it.tags.capacity,
-                            "",
-                            0f
+                            it.id, (LatLng(it.lat, it.lon)), it.tags.capacity, "", 0f
                         )
                     )
                 }
@@ -69,12 +78,16 @@ class BuscarViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setParkingCercanos(latLng: LatLng) {
-        parkings.value?.forEach { parking -> establecerDistancia(latLng, parking) }
-        parkings.value = parkings.value?.sortedBy { it.distancia }
+        viewModelScope.launch {
+            parkings.value?.forEach { parking -> establecerDistancia(latLng, parking) }
+            parkings.value = parkings.value?.sortedBy { it.distancia }
 
-        parkingsCercanos.value = parkings.value?.take(5)
-        parkingsCercanos.value?.forEach { parking -> setDireccion(latLng, parking) }
-        parkingsCercanosCargados.postValue(true)
+            parkingsCercanos.value = parkings.value?.take(5)
+            parkingsCercanos.value?.forEach { parking -> setDireccion(parking) }
+            delay(500)
+            parkingsCercanosCargados.postValue(true)
+        }
+
     }
 
     private fun establecerDistancia(direccion: LatLng, parking: Parking) {
@@ -89,17 +102,18 @@ class BuscarViewModel @Inject constructor() : ViewModel() {
         parking.distancia = distancia[0]
     }
 
-    private fun setDireccion(latlng: LatLng, parking: Parking) {
-        geocoder.getFromLocation(
-            latlng.latitude,
-            latlng.longitude,
+
+    private fun setDireccion(parking: Parking) {
+        geocoder.getFromLocation(parking.latLng.latitude,
+            parking.latLng.longitude,
             10,
             object : Geocoder.GeocodeListener {
                 override fun onGeocode(addresses: MutableList<Address>) {
-                    if(addresses.size > 0) {
+                    if (addresses.size > 0) {
                         addresses.forEach { address ->
-                            if(address.thoroughfare != null && address.thoroughfare.isNotBlank()) {
-                                parking.direccion = "${addresses[0].thoroughfare}  ${addresses[0].subThoroughfare}"
+                            if (address.thoroughfare != null && address.thoroughfare.isNotBlank()) {
+                                parking.direccion =
+                                    "${addresses[0].thoroughfare}  ${addresses[0].subThoroughfare}"
                                 return
                             }
                         }
@@ -111,6 +125,14 @@ class BuscarViewModel @Inject constructor() : ViewModel() {
 
                 }
             })
+    }
+
+    fun guardarReciente(context: Context) {
+
+    }
+
+    fun cargarRecientes(context: Context) {
+
     }
 
 

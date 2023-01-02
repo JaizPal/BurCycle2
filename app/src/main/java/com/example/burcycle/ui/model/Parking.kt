@@ -18,7 +18,7 @@ data class Parking(
     }
 
     override fun getTitle(): String {
-        return "Capacidad: $title"
+        return "Plazas: $title"
     }
 
     override fun getSnippet(): String {

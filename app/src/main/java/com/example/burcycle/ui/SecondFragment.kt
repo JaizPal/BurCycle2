@@ -58,6 +58,7 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
         getLocationPermission()
@@ -72,30 +73,24 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            if(lastKnownLocation == null) {
+            if (lastKnownLocation == null) {
                 getDeviceLocation()
-            }
-            map?.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        lastKnownLocation!!.latitude,
-                        lastKnownLocation!!.longitude
-                    ), DEFAULT_ZOOM.toFloat() - 1
+            } else {
+                map?.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            lastKnownLocation!!.latitude,
+                            lastKnownLocation!!.longitude
+                        ), DEFAULT_ZOOM.toFloat() - 1
+                    )
                 )
-            )
+            }
         }
 
         return binding.root
     }
 
     private fun addMarker(parking: Parking) {
-//        map?.addMarker(
-//            MarkerOptions()
-//                .position(parking.latLng)
-//                .title("ID: ${parking.id} - Capacidad: ${parking.capacidad}")
-//                .alpha(0.7f)
-//                .icon((BitmapDescriptorFactory.fromResource(R.drawable.icons8_bike_parking)))
-//        )
         clusterManager.addItem(parking)
     }
 
@@ -111,19 +106,16 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-//        map?.setMapStyle(MapStyleOptions())
         clusterManager = ClusterManager(requireContext(), map)
         map?.setMinZoomPreference(13.0f)
         map?.setOnCameraIdleListener(clusterManager)
         map?.setOnMarkerClickListener(clusterManager)
         getLocationPermission()
-        // [END_EXCLUDE]
 
-        // Turn on the My Location layer and the related control on the map.
-        updateLocationUI()
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation()
+        updateLocationUI()
 
         map!!.setLatLngBoundsForCameraTarget(perimetroMaximo)
     }
@@ -215,7 +207,12 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
             locationPermissionGranted = true
         } else {
             ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                requireActivity(),
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET
+                ),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
         }
@@ -245,7 +242,6 @@ class SecondFragment : Fragment(), OnMapReadyCallback {
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
-    // [END maps_current_place_on_request_permissions_result]
 
     companion object {
         private val TAG = SecondFragment::class.java.simpleName
