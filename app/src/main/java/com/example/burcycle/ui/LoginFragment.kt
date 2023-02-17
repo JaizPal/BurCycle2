@@ -18,6 +18,7 @@ import com.example.burcycle.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -52,7 +53,7 @@ class LoginFragment : Fragment() {
                                     navegarInicio()
                                 }
                             }.addOnFailureListener {
-                                showAlert(it.message.toString(), "Error")
+                                showDialog(it.message.toString(), "Error")
                             }
                         Log.d("--- Google Login ---", "Correcto")
                     }
@@ -110,12 +111,12 @@ class LoginFragment : Fragment() {
                         guardarDatosUsuario(it.result.user?.email ?: "")
                         navegarInicio()
                     } else {
-                        showAlert("Confirmación email", "Error")
+                        showDialog("Confirmación email", "Error")
                     }
                 }
             }.addOnFailureListener {
                 password.text = null
-                showAlert(it.message.toString(), "Error")
+                showDialog(it.message.toString(), "Error")
             }
         }
     }
@@ -162,7 +163,7 @@ class LoginFragment : Fragment() {
         prefs.apply()
     }
 
-    private fun showAlert(mensaje: String, titulo: String) {
+    private fun showDialog(mensaje: String, titulo: String) {
         val mensajeError = when (mensaje) {
             "Confirmación email" -> "Confirme la verificación del email en su correo electrónico"
             "The password is invalid or the user does not have a password." -> "Contraseña incorrecta"
@@ -174,12 +175,12 @@ class LoginFragment : Fragment() {
                 mensaje
             }
         }
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(titulo)
-        builder.setMessage(mensajeError)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(titulo)
+            .setMessage(mensajeError)
+            .setPositiveButton("Aceptar") { dialog, which ->
+            }
+            .show()
     }
 
     private fun navegarInicio() {

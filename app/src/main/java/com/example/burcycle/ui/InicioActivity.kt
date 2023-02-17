@@ -45,7 +45,6 @@ class InicioActivity : AppCompatActivity() {
         val navControllerBottomNavigation = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navControllerBottomNavigation)
 
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val layoutSearchView = binding.layoutSearchView
             supportActionBar?.title = null
@@ -56,6 +55,8 @@ class InicioActivity : AppCompatActivity() {
                 R.id.SecondFragment -> {
                     layoutSearchView.visibility = View.GONE
                 }
+                R.id.cuentaFragment ->
+                    layoutSearchView.visibility = View.GONE
             }
         }
 
@@ -71,6 +72,11 @@ class InicioActivity : AppCompatActivity() {
                 R.id.item_mapa -> {
                     Navigation.findNavController(this, R.id.nav_host_fragment_content_inicio)
                         .navigate(R.id.SecondFragment)
+                    true
+                }
+                R.id.item_cuenta -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment_content_inicio)
+                        .navigate(R.id.cuentaFragment)
                     true
                 }
                 else -> false

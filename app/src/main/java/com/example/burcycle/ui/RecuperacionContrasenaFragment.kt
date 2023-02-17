@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.burcycle.databinding.FragmentRecuperacionContrasenaBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -36,10 +37,10 @@ class RecuperacionContrasenaFragment : Fragment() {
                 FirebaseAuth.getInstance().sendPasswordResetEmail(
                     binding.inEmail.text?.trim().toString().lowercase()
                 ).addOnSuccessListener {
-                    showAlert("Email enviado", "Email enviado")
+                    showDialog("Email enviado", "Email enviado")
                     findNavController().popBackStack()
                 }.addOnFailureListener {
-                    showAlert(it.message.toString(), "Error")
+                    showDialog(it.message.toString(), "Error")
                 }
             }
         }
@@ -62,7 +63,8 @@ class RecuperacionContrasenaFragment : Fragment() {
         return correcto
     }
 
-    private fun showAlert(mensaje: String, titulo: String) {
+
+    private fun showDialog(mensaje: String, titulo: String) {
         val mensajeInfo = when (mensaje) {
             "A network error (such as timeout, interrupted connection or unreachable host) has occurred." -> "Error de conexión"
             "There is no user record corresponding to this identifier. The user may have been deleted." -> "El usuario no existe"
@@ -70,12 +72,12 @@ class RecuperacionContrasenaFragment : Fragment() {
             else -> mensaje
 
         }
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(titulo)
-        builder.setMessage(mensajeInfo)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(titulo)
+            .setMessage(mensajeInfo)
+            .setPositiveButton("Aceptar") { dialog, which ->
+            }
+            .show()
     }
 
 }

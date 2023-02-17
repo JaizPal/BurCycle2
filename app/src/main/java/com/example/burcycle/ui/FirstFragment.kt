@@ -1,6 +1,7 @@
 package com.example.burcycle.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.burcycle.R
@@ -23,9 +25,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
-import org.w3c.dom.Text
 import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class FirstFragment : Fragment() {
@@ -96,7 +96,7 @@ class FirstFragment : Fragment() {
                 buscarViewModel.parkingsRecientes.value?.forEachIndexed { i, parking ->
                     materialCardsRecientes[i].visibility = View.VISIBLE
                     tvDireccionesRecientes[i].text = parking.direccion
-                    tvCapacidadesRecientes[i].text = parking.capacidad
+                    tvCapacidadesRecientes[i].text = "Plazas: ${parking.capacidad}"
 
                 }
             }
@@ -109,6 +109,8 @@ class FirstFragment : Fragment() {
         binding.linearLayoutCercanos.visibility = View.GONE
         searchView =
             requireActivity().supportFragmentManager.findFragmentById(R.id.searchView) as AutocompleteSupportFragment
+        searchView.view?.setBackgroundColor(Color.WHITE)
+
         searchView.setCountries(listOf("ES"))
         searchView.setHint("Introduce la calle")
         searchView.setLocationRestriction(
@@ -130,8 +132,29 @@ class FirstFragment : Fragment() {
                 }
             })
 
-        buscarViewModel.parkingsCercanosCargados.observe(requireActivity()) {
+        buscarViewModel.progressBar.observe(requireActivity()) {
             if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+            binding.progressBar.isVisible = it
+        }
+
+//        buscarViewModel.parkingsCercanosCargados.observe(requireActivity()) {
+//            if (it) {
+//                for (i in 0..4) {
+//                    tvDireccionesCercanas[i].text =
+//                        buscarViewModel.parkingsCercanos.value?.get(i)?.direccion
+//                    tvCapacidadesCercanas[i].text =
+//                        "Plazas: ${buscarViewModel.parkingsCercanos.value?.get(i)?.capacidad}"
+//                }
+//                binding.linearLayoutCercanos.visibility = View.VISIBLE
+//            }
+//        }
+
+        buscarViewModel.nParkings.observe(requireActivity()) {
+            if (it == 5) {
                 for (i in 0..4) {
                     tvDireccionesCercanas[i].text =
                         buscarViewModel.parkingsCercanos.value?.get(i)?.direccion
@@ -145,6 +168,22 @@ class FirstFragment : Fragment() {
         materialCardsCercanos.forEach { card ->
             card.setOnClickListener {
                 checkCard(card)
+            }
+        }
+
+        materialCardsRecientes.forEach { card ->
+            card.setOnClickListener {
+                buscarViewModel.parkingsRecientes.value?.forEachIndexed { index, parking ->
+                    if (parking.direccion == tvDireccionesRecientes[index].text) {
+                        val gmmIntentUri = Uri.parse(
+                            "google.navigation:q=${parking.latLng.latitude}"
+                                    + ",${parking.latLng.longitude}&mode=b"
+                        )
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                    }
+                }
             }
         }
 

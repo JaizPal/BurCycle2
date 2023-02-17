@@ -27,4 +27,6 @@
     <string name="plazas">Plazas</string>
     <string name="ir">IR</string>
     <string name="aparcamientos_recientes">Aparcamientos recientes</string>
+    <string name="eliminar_recientes">Eliminar recientes</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
 </resources>

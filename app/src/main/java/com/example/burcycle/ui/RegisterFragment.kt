@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.burcycle.R
 import com.example.burcycle.databinding.FragmentRegisterBinding
 import com.example.burcycle.ui.viewModel.RegisterViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,15 +65,15 @@ class RegisterFragment : Fragment() {
                     FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
                         ?.addOnSuccessListener {
                             Log.i("--- REGISTRO ---", "Email enviado")
-                            showAlert("Email enviado", "")
+                            showDialog("Email enviado", "")
                             navegarPrincipal()
                         }?.addOnFailureListener {
                             Log.i("--- REGISTRO ---", "Error en el registro, email no enviado")
-                            showAlert(it.message.toString(), "Error")
+                            showDialog(it.message.toString(), "Error")
                         }
                 }
             }.addOnFailureListener {
-                showAlert(it.message.toString(), "Error")
+                showDialog(it.message.toString(), "Error")
                 Log.d("--- REGISTRO ---", "Error en el registro")
                 Log.d("||| Causa |||", "${it.message} ${it.cause}")
             }
@@ -145,7 +146,7 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
-    private fun showAlert(mensaje: String, titulo: String) {
+    private fun showDialog(mensaje: String, titulo: String) {
         val contenidoMensaje = when (mensaje) {
             "Email enviado" -> "Se ha enviado un email de confirmación a su correo electrónico"
             "The password is invalid or the user does not have a password." -> "La contraseña es inválida o el usuario no tiene contraseña"
@@ -157,16 +158,15 @@ class RegisterFragment : Fragment() {
                 "Error desconocido $mensaje"
             }
         }
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(titulo)
-        builder.setMessage(contenidoMensaje)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(titulo)
+            .setMessage(contenidoMensaje)
+            .setPositiveButton("Aceptar") { dialog, which ->
+            }
+            .show()
     }
 
     private fun navegarPrincipal() {
-//        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
     }
 }
